@@ -1,32 +1,38 @@
 CREATE TABLE "brands" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"slug" text,
+	"slug" text NOT NULL,
 	"name" text NOT NULL,
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
 	CONSTRAINT "brands_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
 CREATE TABLE "items" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"slug" text,
-	"name" text,
+	"slug" text NOT NULL,
+	"name" text NOT NULL,
 	"brand" text,
-	CONSTRAINT "items_slug_unique" UNIQUE("slug"),
-	CONSTRAINT "items_name_unique" UNIQUE("name")
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "items_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
 CREATE TABLE "roles" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"slug" text,
+	"slug" text NOT NULL,
 	"name" text NOT NULL,
-	CONSTRAINT "roles_slug_unique" UNIQUE("slug"),
-	CONSTRAINT "roles_name_unique" UNIQUE("name")
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "roles_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"email" text,
-	"username" text NOT NULL,
+	"email" text NOT NULL,
+	"name" text NOT NULL,
 	"role" text,
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint

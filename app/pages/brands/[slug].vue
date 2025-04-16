@@ -2,7 +2,9 @@
 const route = useRoute();
 const slug = route.params.slug as string;
 
-const { state: brand } = useQuery({
+const queryCache = useQueryCache();
+
+const { state: brand, asyncStatus: brandStatus} = useQuery({
   key: ["brand", slug],
   query: ({ signal }) => useRequestFetch()(`/api/brands/${slug}`, { signal }),
 });
@@ -12,7 +14,7 @@ const { state: brand } = useQuery({
   <div class="flex flex-col gap-16">
     <PageHeader
       :title="brand.data?.name"
-      :status="brand.status"
+      :status="brandStatus"
     >
       <template #actions>
         <UButton

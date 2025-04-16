@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1744197151425,
-      "tag": "0000_puzzling_human_torch",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1744543738149,
-      "tag": "0001_giant_morph",
+      "when": 1744804717037,
+      "tag": "0000_faithful_black_bolt",
       "breakpoints": true
     }
   ]

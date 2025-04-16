@@ -9,21 +9,21 @@ watch(loggedIn, () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col gap-8">
+  <div class="max-w-screen min-h-screen flex flex-col">
     <SiteHeader />
 
-    <main class="flex-grow">
-      <UContainer>
-        <div class="flex flex-col gap-16">
+    <main class="flex-grow bg-neutral-500/4">
+      <div class="mx-auto px-2 md:px-4 container">
+        <div class="py-16 flex flex-col gap-16">
           <slot />
         </div>
-      </UContainer>
+      </div>
     </main>
 
-    <footer class="px-2 md:px-4">
-      <UContainer>
+    <footer class="">
+      <div class="mx-auto px-2 md:px-4 py-16 container">
         <p>&copy; 2023 My App</p>
-      </UContainer>
+      </div>
     </footer>
   </div>
 </template>

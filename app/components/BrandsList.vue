@@ -38,15 +38,28 @@ const sortedItems = useSorted(filteredItems, (a, b) => {
 </script>
 
 <template>
-  <div class="flex flex-wrap justify-between gap-8">
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+  >
     <div
       v-for="item in sortedItems"
       :key="item.id"
-      class="min-w-56 text-center"
     >
-      <NuxtLink :to="`/brands/${item.slug}`">
-        {{ item.name }}
-      </NuxtLink>
+      <UCard variant="subtle">
+        <template #header>
+          <h3 class="text-lg font-bold">{{ item.name }}</h3>
+        </template>
+
+        <p>Description and logo of brand</p>
+        <template #footer>
+          <p
+            v-if="item.created_at"
+            class="text-sm"
+          >
+            Created {{ new Date(item.created_at || "").toLocaleDateString() }}
+          </p>
+        </template>
+      </UCard>
     </div>
   </div>
 </template>

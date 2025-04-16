@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 defineProps<{
   title?: string;
-  status?: "success" | "error" | "pending";
+  status?: "success" | "error" | "pending" | "loading";
 }>();
 
 defineSlots();
 </script>
 
 <template>
-  <section class="flex flex-row justify-between items-end gap-8">
+  <section class="flex flex-row flex-wrap justify-between items-end gap-8">
     <div>
       <span class="mb-2 block text-2xl">
         <USkeleton
-          v-if="status === 'pending'"
+          v-if="status === 'pending' || status === 'loading'"
           class="h-8 w-32"
         />
 
