@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import type { Brand } from "~~/server/utils/db";
 
-const queryCache = useQueryCache();
-
 const filterName = ref("");
 const sortBy = ref<"name" | "created_at">("name");
 const sortOrder = ref(true); // true for ascending, false for descending
@@ -11,10 +9,7 @@ const sortOptions = ref([
   { label: "Date", value: "created_at" },
 ]);
 
-const { state: brands, status } = useQuery({
-  key: ["brands"],
-  query: ({ signal }) => useRequestFetch()("/api/brands", { signal }),
-});
+const brands = useBrands();
 </script>
 
 <template>
@@ -72,19 +67,18 @@ const { state: brands, status } = useQuery({
             />
           </UButtonGroup>
           <div>
-          <UButton
-            href="/brands/add"
-            color="primary"
-            variant="subtle"
-            size="lg"
-          >
-            <UIcon
-              name="tabler:layout-grid-add"
-              size="1.125rem"
-            />
-            Create brand
-          </UButton>
-
+            <UButton
+              href="/brands/add"
+              color="primary"
+              variant="subtle"
+              size="lg"
+            >
+              <UIcon
+                name="tabler:layout-grid-add"
+                size="1.125rem"
+              />
+              Create brand
+            </UButton>
           </div>
         </div>
       </template>
@@ -92,9 +86,9 @@ const { state: brands, status } = useQuery({
 
     <section class="flex flex-col gap-4">
       <BrandsList
-        :items="brands.data as Brand[] ?? []"
-        :error="brands.error"
-        :status="brands.status"
+        :items="brands.data.value as Brand[] || undefined"
+        :error="brands.error.value"
+        :status="brands.status.value"
         :filter="{ name: filterName }"
         :sort="{ by: sortBy, order: sortOrder }"
       />

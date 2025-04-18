@@ -3,9 +3,23 @@
 
 @theme {
   --font-sans: "Inter", sans-serif;
+
+  --breakpoint-2xs: 40rem;
+  --breakpoint-xs: 48rem;
+  --breakpoint-sm: 56rem;
+  --breakpoint-md: 64rem;
+  --breakpoint-lg: 72rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+  --breakpoint-3xl: 112rem;
+}
+
+html {
+  @apply subpixel-antialiased;
 }
 
 body {
   @apply text-black bg-neutral-50;
   @apply dark:text-white dark:bg-neutral-950;
+  @apply max-w-screen min-h-screen;
 }

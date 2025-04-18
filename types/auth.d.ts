@@ -1,8 +1,22 @@
 declare module "#auth-utils" {
-  interface User {
+  // General session information
+  interface UserSession {
     id: number;
-    login: string;
+    provider?: string;
+  }
+
+  // User information
+  interface User {
     name: string;
+    email: string;
+  }
+
+  // Secure session data
+  // This data is only available on the server
+  interface SecureSessionData {
+    providerTokens?: any;
+    providerData?: any;
   }
 }
+
 export {};

@@ -9,15 +9,15 @@ watch(loggedIn, () => {
 </script>
 
 <template>
-  <div class="max-w-screen min-h-screen flex flex-col">
+  <div class="flex flex-col overflow-hidden">
     <SiteHeader />
 
-    <main class="flex-grow bg-neutral-500/4">
-      <div class="mx-auto px-2 md:px-4 container">
+    <main class="flex-grow">
+      <Container>
         <div class="py-16 flex flex-col gap-16">
           <slot />
         </div>
-      </div>
+      </Container>
     </main>
 
     <footer class="">
@@ -27,3 +27,11 @@ watch(loggedIn, () => {
     </footer>
   </div>
 </template>
+
+<style scoped>
+@reference "@/assets/css/main.css";
+
+main {
+  @apply bg-white/50 dark:bg-black/50;
+}
+</style>

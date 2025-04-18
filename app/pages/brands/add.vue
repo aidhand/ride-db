@@ -40,7 +40,7 @@ const {
 
       <template #actions>
         <UButton
-          to="/brands"
+          href="/brands"
           color="neutral"
           variant="subtle"
           size="lg"
