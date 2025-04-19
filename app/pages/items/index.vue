@@ -1,16 +1,20 @@
 <script lang="ts" setup>
-const filterName = ref('');
-const filterBrand = ref('');
-const sortBy = ref<'name' | 'brand' | 'created_at'>('name');
-const sortOrder = ref(true); // true for ascending, false for descending
-const sortOptions = ref([
-  { label: 'Name', value: 'name' },
-  { label: 'Brand', value: 'brand' },
-  { label: 'Date', value: 'created_at' },
-]);
+  useHead({
+    title: "Items",
+  });
 
-const items = useItems();
-const brands = useBrands();
+  const filterName = ref("");
+  const filterBrand = ref("");
+  const sortBy = ref<"name" | "brand" | "created_at">("name");
+  const sortOrder = ref(true); // true for ascending, false for descending
+  const sortOptions = ref([
+    { label: "Name", value: "name" },
+    { label: "Brand", value: "brand" },
+    { label: "Date", value: "created_at" },
+  ]);
+
+  const items = useItems();
+  const brands = useBrands();
 </script>
 
 <template>
@@ -71,8 +75,8 @@ const brands = useBrands();
               label="Sort"
             />
             <USelect
-              :items="sortOptions"
               v-model="sortBy"
+              :items="sortOptions"
               variant="outline"
               size="lg"
               class="w-32"
@@ -86,8 +90,8 @@ const brands = useBrands();
                   ? 'i-tabler:sort-ascending-2'
                   : 'i-tabler:sort-descending-2'
               "
-              @click="sortOrder = !sortOrder"
               class="cursor-pointer"
+              @click="sortOrder = !sortOrder"
             />
           </UButtonGroup>
           <div>
@@ -110,7 +114,7 @@ const brands = useBrands();
 
     <section class="flex flex-col gap-4">
       <ItemsList
-        :items="items.data.value as Item[] || undefined"
+        :items="(items.data.value as Item[]) || undefined"
         :error="items.error.value"
         :status="items.status.value"
         :filter="{ name: filterName, brand: filterBrand }"

@@ -1,9 +1,13 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: 'auth',
-});
+  useHead({
+    title: "Profile",
+  });
+  definePageMeta({
+    middleware: "auth",
+  });
 
-const { loggedIn, user, session, fetch, clear, openInPopup } = useUserSession();
+  const { loggedIn, user, session, fetch, clear, openInPopup } =
+    useUserSession();
 </script>
 
 <template>

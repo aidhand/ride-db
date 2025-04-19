@@ -1,4 +1,4 @@
-import { tables, useDB } from '../../utils/db';
+import { tables, useDB } from "../../utils/db";
 
 export default defineOAuthGitHubEventHandler({
   async onSuccess(event, data) {
@@ -40,7 +40,7 @@ export default defineOAuthGitHubEventHandler({
       event,
       {
         id: session.id,
-        provider: 'github',
+        provider: "github",
 
         user: {
           slug: user.slug,
@@ -54,9 +54,9 @@ export default defineOAuthGitHubEventHandler({
       },
       {
         maxAge: expirySeconds,
-      }
+      },
     );
 
-    return sendRedirect(event, '/feed');
+    return sendRedirect(event, "/feed");
   },
 });

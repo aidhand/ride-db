@@ -1,8 +1,12 @@
 <script lang="ts" setup>
-const route = useRoute();
-const slug = route.params.slug as string;
+  const route = useRoute();
+  const slug = route.params.slug as string;
 
-const brand = useBrand(slug);
+  const brand = useBrand(slug);
+
+  useHead({
+    title: brand.data.value?.name || "Brand",
+  });
 </script>
 
 <template>

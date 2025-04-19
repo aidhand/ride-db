@@ -1,15 +1,15 @@
-import { eq, sql } from 'drizzle-orm';
-import type { Item } from '~~/server/utils/db';
-import { tables, useDB } from '~~/server/utils/db';
+import { eq, sql } from "drizzle-orm";
+import type { Item } from "~~/server/utils/db";
+import { tables, useDB } from "~~/server/utils/db";
 
 // Retrieves a single item by its slug
 export default eventHandler(async (event) => {
-  const slug = getRouterParam(event, 'slug');
+  const slug = getRouterParam(event, "slug");
 
   if (!slug) {
     throw createError({
       statusCode: 400,
-      message: 'Item slug is required',
+      message: "Item slug is required",
     });
   }
 
@@ -17,9 +17,9 @@ export default eventHandler(async (event) => {
   const query = db
     .select()
     .from(tables.items)
-    .where(eq(tables.items.slug, sql.placeholder('slug')))
+    .where(eq(tables.items.slug, sql.placeholder("slug")))
     .limit(1)
-    .prepare('getItemBySlug');
+    .prepare("getItemBySlug");
 
   const items = await query.execute({ slug });
 

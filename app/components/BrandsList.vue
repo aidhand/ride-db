@@ -1,31 +1,31 @@
 <script lang="ts" setup>
-import type { ListProps } from '~~/types/props';
+  import type { ListProps } from "~~/types/props";
 
-const props = withDefaults(
-  defineProps<
-    ListProps<Brand> & {
-      filter?: {
-        name?: string;
-      };
-      sort?: {
-        by: 'name' | 'created_at';
-        order: boolean;
-      };
-    }
-  >(),
-  {
-    sort: () => ({
-      by: 'name',
-      order: true,
-    }),
-  }
-);
+  const props = withDefaults(
+    defineProps<
+      ListProps<Brand> & {
+        filter?: {
+          name?: string;
+        };
+        sort?: {
+          by: "name" | "created_at";
+          order: boolean;
+        };
+      }
+    >(),
+    {
+      sort: () => ({
+        by: "name",
+        order: true,
+      }),
+    },
+  );
 
-// Filter and sort items based on props
-const outputItems = computed(() => {
-  const filteredItems = useFilter(props.items, props.filter);
-  return useSort(filteredItems, props.sort);
-});
+  // Filter and sort items based on props
+  const outputItems = computed(() => {
+    const filteredItems = useFilter(props.items, props.filter);
+    return useSort(filteredItems, props.sort);
+  });
 </script>
 
 <template>

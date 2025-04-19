@@ -1,44 +1,53 @@
 <script lang="ts" setup>
-definePageMeta({
-  middleware: 'auth',
-});
-
-const queryCache = useQueryCache();
-const newItemName = ref('');
-const selectedBrand = ref('');
-
-const brands = useBrands();
-
-const {
-  mutate: addItem,
-  asyncStatus: itemStatus,
-  error: itemError,
-} = useMutation({
-  mutation: (item: { name: string; brand: string }) => {
-    // TODO: Add local validation
-    return $fetch('/api/items', {
-      method: 'POST',
-      body: item,
-    });
-  },
-
-  async onSuccess(item) {
-    newItemName.value = '';
-    selectedBrand.value = '';
-    await queryCache.invalidateQueries({ key: ['items'] });
-  },
-
-  onError(err) {
-    console.error(err);
-  },
-});
-
-const submitForm = () => {
-  addItem({
-    name: newItemName.value,
-    brand: selectedBrand.value,
+  useHead({
+    title: "Add Item",
   });
-};
+
+  definePageMeta({
+    middleware: "auth",
+  });
+
+  const queryCache = useQueryCache();
+  const newItemName = ref("");
+  const selectedBrand = ref("");
+
+  const brands = useBrands();
+
+  const {
+    mutate: addItem,
+    asyncStatus: itemStatus,
+    error: itemError,
+  } = useMutation({
+    mutation: (item: { name: string; brand: string }) => {
+      // TODO: Add local validation
+      return $fetch("/api/items", {
+        method: "POST",
+        body: item,
+      });
+    },
+
+    async onSuccess() {
+      newItemName.value = "";
+      selectedBrand.value = "";
+      await queryCache.invalidateQueries({ key: ["items"] });
+    },
+
+    onError(err) {
+      // Use UI notify or other error handling instead of console.error
+      useToast().add({
+        title: "Error",
+        description: err?.message || "Could not add item",
+        color: "error",
+      });
+    },
+  });
+
+  const submitForm = () => {
+    addItem({
+      name: newItemName.value,
+      brand: selectedBrand.value,
+    });
+  };
 </script>
 
 <template>

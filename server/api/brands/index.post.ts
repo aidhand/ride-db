@@ -1,5 +1,5 @@
-import { sql } from 'drizzle-orm';
-import { useValidatedBody, z } from 'h3-zod';
+import { sql } from "drizzle-orm";
+import { useValidatedBody, z } from "h3-zod";
 
 const brandInputSchema = z.object({
   name: z.string().min(2).max(32),
@@ -22,12 +22,12 @@ export default eventHandler(async (event) => {
   const query = db
     .insert(tables.brands)
     .values({
-      name: sql.placeholder('name'),
-      slug: sql.placeholder('slug'),
+      name: sql.placeholder("name"),
+      slug: sql.placeholder("slug"),
     })
     .onConflictDoNothing()
     .returning()
-    .prepare('insertBrand');
+    .prepare("insertBrand");
 
   const results = await query.execute({ name, slug });
 

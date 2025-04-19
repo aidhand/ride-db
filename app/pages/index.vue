@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+  useHead({
+    title: "Ride DB",
+  });
+</script>
+
 <template>
   <div>
     <PageHeader title="Ride DB">

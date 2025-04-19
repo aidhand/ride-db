@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const { loggedIn, user, clear } = useUserSession();
+  const { loggedIn, user, clear } = useUserSession();
 
-watch(loggedIn, () => {
-  if (!loggedIn.value) {
-    navigateTo('/');
-  }
-});
+  watch(loggedIn, () => {
+    if (!loggedIn.value) {
+      navigateTo("/");
+    }
+  });
 </script>
 
 <template>
@@ -29,9 +29,9 @@ watch(loggedIn, () => {
 </template>
 
 <style scoped>
-@reference "@/assets/css/main.css";
+  @reference "@/assets/css/main.css";
 
-main {
-  @apply bg-white/50 dark:bg-black/50;
-}
+  main {
+    @apply bg-white/50 dark:bg-black/50;
+  }
 </style>

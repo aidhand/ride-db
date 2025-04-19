@@ -6,7 +6,7 @@ interface FilterableColumns {
 
 export function useFilter<T extends FilterableColumns>(
   items: Ref<T[]> | T[],
-  filter?: { name?: string; brand?: string; category?: string }
+  filter?: { name?: string; brand?: string; category?: string },
 ) {
   const actualItems = unref(items);
 

@@ -1,13 +1,19 @@
 <script lang="ts" setup>
-const filterName = ref('');
-const sortBy = ref<'name' | 'created_at'>('name');
-const sortOrder = ref(true); // true for ascending, false for descending
-const sortOptions = ref([
-  { label: 'Name', value: 'name' },
-  { label: 'Date', value: 'created_at' },
-]);
+  useHead({
+    title: "Brands",
+  });
 
-const brands = useBrands();
+  const filterName = ref("");
+  const sortBy = ref<"name" | "created_at">("name");
+  const sortOrder = ref(true); // true for ascending, false for descending
+  const sortOptions = ref([
+    { label: "Name", value: "name" },
+    { label: "Date", value: "created_at" },
+  ]);
+
+  const brands = useBrands();
+
+  // Set the page title
 </script>
 
 <template>
@@ -45,8 +51,8 @@ const brands = useBrands();
               label="Sort"
             />
             <USelect
-              :items="sortOptions"
               v-model="sortBy"
+              :items="sortOptions"
               variant="outline"
               size="lg"
               class="w-32"
@@ -60,8 +66,8 @@ const brands = useBrands();
                   ? 'i-tabler:sort-ascending-2'
                   : 'i-tabler:sort-descending-2'
               "
-              @click="sortOrder = !sortOrder"
               class="cursor-pointer"
+              @click="sortOrder = !sortOrder"
             />
           </UButtonGroup>
           <div>
@@ -84,7 +90,7 @@ const brands = useBrands();
 
     <section class="flex flex-col gap-4">
       <BrandsList
-        :items="brands.data.value as Brand[] || undefined"
+        :items="(brands.data.value as Brand[]) || undefined"
         :error="brands.error.value"
         :status="brands.status.value"
         :filter="{ name: filterName }"

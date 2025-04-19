@@ -1,4 +1,4 @@
-declare module '#auth-utils' {
+declare module "#auth-utils" {
   // General session information
   interface UserSession {
     id: number;
@@ -16,7 +16,7 @@ declare module '#auth-utils' {
   // This data is only available on the server
   interface SecureSessionData {
     token: string;
-    providerData?: any;
+    providerData?: Record<string, unknown>;
   }
 }
 

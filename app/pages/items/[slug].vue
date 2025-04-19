@@ -1,14 +1,18 @@
 <script lang="ts" setup>
-const route = useRoute();
-const slug = route.params.slug as string;
+  const route = useRoute();
+  const slug = route.params.slug as string;
 
-const item = useItem(slug);
+  const item = useItem(slug);
 
-// Helper function for safe date formatting
-const formatDate = (dateString: string | null) => {
-  if (!dateString) return 'N/A';
-  return new Date(dateString).toLocaleDateString();
-};
+  useHead({
+    title: item.data.value?.name || "Item",
+  });
+
+  // Helper function for safe date formatting
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleDateString();
+  };
 </script>
 
 <template>
@@ -18,8 +22,8 @@ const formatDate = (dateString: string | null) => {
       :status="item.status.value"
     >
       <template
-        #description
         v-if="item.data.value"
+        #description
       >
         <p class="text-lg text-gray-500">
           Brand:

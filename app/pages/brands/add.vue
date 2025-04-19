@@ -1,35 +1,43 @@
 <script lang="ts" setup>
-definePageMeta({
-  middleware: 'auth',
-});
+  useHead({
+    title: "Add Brand",
+  });
+  definePageMeta({
+    middleware: "auth",
+  });
 
-const queryCache = useQueryCache();
-const newBrand = ref('');
+  const queryCache = useQueryCache();
+  const newBrand = ref("");
 
-const {
-  mutate: addBrand,
-  asyncStatus: brandStatus,
-  error: brandError,
-} = useMutation({
-  mutation: (name: string) => {
-    // TODO: Add local validation
-    return $fetch('/api/brands', {
-      method: 'POST',
-      body: {
-        name,
-      },
-    });
-  },
+  const {
+    mutate: addBrand,
+    asyncStatus: brandStatus,
+    error: brandError,
+  } = useMutation({
+    mutation: (name: string) => {
+      // TODO: Add local validation
+      return $fetch("/api/brands", {
+        method: "POST",
+        body: {
+          name,
+        },
+      });
+    },
 
-  async onSuccess(brand) {
-    newBrand.value = '';
-    await queryCache.invalidateQueries({ key: ['brands'] });
-  },
+    async onSuccess() {
+      newBrand.value = "";
+      await queryCache.invalidateQueries({ key: ["brands"] });
+    },
 
-  onError(err) {
-    console.error(err);
-  },
-});
+    onError(err) {
+      // Use UI notify or other error handling instead of console.error
+      useToast().add({
+        title: "Error",
+        description: err?.message || "Could not add brand",
+        color: "error",
+      });
+    },
+  });
 </script>
 <template>
   <div class="flex flex-col gap-16">

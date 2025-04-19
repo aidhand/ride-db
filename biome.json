@@ -3,19 +3,31 @@
   "organizeImports": {
     "enabled": true
   },
+
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true
     }
   },
+
   "formatter": {
     "enabled": true,
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineWidth": 100,
-    "ignore": [".nuxt/**", "node_modules/**", "dist/**", ".output/**"]
+    "useEditorconfig": true,
+    "formatWithErrors": true,
+    "attributePosition": "multiline"
   },
+
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "always",
+      "quoteProperties": "preserve",
+      "semicolons": "always",
+      "quoteStyle": "double",
+      "trailingCommas": "all"
+    }
+  },
+
   "vcs": {
     "enabled": true,
     "clientKind": "git",

@@ -1,47 +1,47 @@
 <script setup lang="ts">
-import type { DropdownMenuItem } from '@nuxt/ui';
+  import type { DropdownMenuItem } from "@nuxt/ui";
 
-const colorMode = useColorMode();
-const { loggedIn, user, clear } = useUserSession();
+  const colorMode = useColorMode();
+  const { loggedIn, user, clear } = useUserSession();
 
-const isDark = computed({
-  get() {
-    return colorMode.value === 'dark';
-  },
-  set() {
-    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
-  },
-});
+  const isDark = computed({
+    get() {
+      return colorMode.value === "dark";
+    },
+    set() {
+      colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
+    },
+  });
 
-const userNavItems = ref<DropdownMenuItem[][]>([
-  [
-    {
-      label: 'Profile',
-      icon: 'tabler:user',
-      href: '/user/profile',
-    },
-    {
-      label: 'Watchlist',
-      icon: 'tabler:list-check',
-      href: '/user/watchlist',
-    },
-    {
-      label: 'Settings',
-      icon: 'tabler:settings',
-      href: '/user/settings',
-    },
-  ],
-  [
-    {
-      label: 'Logout',
-      icon: 'tabler:logout',
-      onSelect: () => {
-        clear();
-        navigateTo('/');
+  const userNavItems = ref<DropdownMenuItem[][]>([
+    [
+      {
+        label: "Profile",
+        icon: "tabler:user",
+        href: "/user/profile",
       },
-    },
-  ],
-]);
+      {
+        label: "Watchlist",
+        icon: "tabler:list-check",
+        href: "/user/watchlist",
+      },
+      {
+        label: "Settings",
+        icon: "tabler:settings",
+        href: "/user/settings",
+      },
+    ],
+    [
+      {
+        label: "Logout",
+        icon: "tabler:logout",
+        onSelect: () => {
+          clear();
+          navigateTo("/");
+        },
+      },
+    ],
+  ]);
 </script>
 
 <template>

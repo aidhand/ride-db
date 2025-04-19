@@ -1,8 +1,12 @@
-import { drizzle } from 'drizzle-orm/neon-http';
-import * as schema from '../database/schema';
+import { drizzle } from "drizzle-orm/neon-serverless";
+import * as schema from "../database/schema";
 
 export function useDB() {
-  return drizzle(process.env.DATABASE_URL!, { schema });
+  return drizzle(
+    process.env.DATABASE_URL ||
+      "postgresql://postgres:postgres@localhost:5432/ride-db",
+    { schema },
+  );
 }
 export const tables = schema;
 

@@ -1,5 +1,5 @@
-import { eq, sql } from 'drizzle-orm';
-import { useValidatedBody, z } from 'h3-zod';
+import { eq, sql } from "drizzle-orm";
+import { useValidatedBody, z } from "h3-zod";
 
 const itemInputSchema = z.object({
   name: z.string().min(2).max(100),
@@ -37,20 +37,20 @@ export default eventHandler(async (event) => {
   const query = db
     .insert(tables.items)
     .values({
-      name: sql.placeholder('name'),
-      slug: sql.placeholder('slug'),
-      brand: sql.placeholder('brand'),
+      name: sql.placeholder("name"),
+      slug: sql.placeholder("slug"),
+      brand: sql.placeholder("brand"),
     })
     .onConflictDoNothing()
     .returning()
-    .prepare('insertItem');
+    .prepare("insertItem");
 
   const results = await query.execute({ name, slug, brand });
 
   if (!results.length) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Unable to create item, slug may already exist',
+      statusMessage: "Unable to create item, slug may already exist",
     });
   }
 

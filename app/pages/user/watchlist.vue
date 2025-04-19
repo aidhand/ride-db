@@ -1,7 +1,10 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: 'auth',
-});
+  useHead({
+    title: "Watchlist",
+  });
+  definePageMeta({
+    middleware: "auth",
+  });
 </script>
 
 <template>

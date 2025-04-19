@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-defineProps<{
-  title?: Ref<string> | string;
-  status?: 'success' | 'error' | 'pending';
-}>();
+  defineProps<{
+    title?: Ref<string> | string;
+    status?: "success" | "error" | "pending";
+  }>();
 
-defineSlots();
+  defineSlots();
 </script>
 
 <template>
