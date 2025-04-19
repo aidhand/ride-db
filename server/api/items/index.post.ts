@@ -1,5 +1,5 @@
-import { eq, sql } from "drizzle-orm";
-import { useValidatedBody, z } from "h3-zod";
+import { eq, sql } from 'drizzle-orm';
+import { useValidatedBody, z } from 'h3-zod';
 
 const itemInputSchema = z.object({
   name: z.string().min(2).max(100),
@@ -7,7 +7,7 @@ const itemInputSchema = z.object({
 });
 
 export default eventHandler(async (event) => {
-  const { user } = await requireUserSession(event);
+  const { _ } = await requireUserSession(event);
   const { name, brand } = await useValidatedBody(event, itemInputSchema);
 
   // TODO: Check if the user has permission to create an item.
@@ -16,7 +16,7 @@ export default eventHandler(async (event) => {
   // }
 
   // Generate a slug from the item name
-  let slug = slugify(name);
+  const slug = slugify(name);
 
   // Check if the brand exists
   const db = useDB();
@@ -37,20 +37,20 @@ export default eventHandler(async (event) => {
   const query = db
     .insert(tables.items)
     .values({
-      name: sql.placeholder("name"),
-      slug: sql.placeholder("slug"),
-      brand: sql.placeholder("brand"),
+      name: sql.placeholder('name'),
+      slug: sql.placeholder('slug'),
+      brand: sql.placeholder('brand'),
     })
     .onConflictDoNothing()
     .returning()
-    .prepare("insertItem");
+    .prepare('insertItem');
 
   const results = await query.execute({ name, slug, brand });
 
   if (!results.length) {
     throw createError({
       statusCode: 400,
-      statusMessage: "Unable to create item, slug may already exist",
+      statusMessage: 'Unable to create item, slug may already exist',
     });
   }
 

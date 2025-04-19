@@ -1,7 +1,7 @@
 interface FilterableColumns {
-  name?: string;
-  brand?: string;
-  category?: string;
+  name?: string | null;
+  brand?: string | null;
+  category?: string | null;
 }
 
 export function useFilter<T extends FilterableColumns>(
@@ -13,7 +13,7 @@ export function useFilter<T extends FilterableColumns>(
   if (!filter) return actualItems;
 
   return actualItems.filter((item) => {
-    let match = {
+    const match = {
       name: true,
       brand: true,
       category: true,

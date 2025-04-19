@@ -1,20 +1,21 @@
 <script lang="ts" setup>
+import type { ListProps } from '~~/types/props';
+
 const props = withDefaults(
-  defineProps<{
-    items: Brand[];
-    error: Error | string | null;
-    status: "success" | "error" | "pending";
-    filter?: {
-      name?: string;
-    };
-    sort?: {
-      by: "name" | "created_at";
-      order: boolean;
-    };
-  }>(),
+  defineProps<
+    ListProps<Brand> & {
+      filter?: {
+        name?: string;
+      };
+      sort?: {
+        by: 'name' | 'created_at';
+        order: boolean;
+      };
+    }
+  >(),
   {
     sort: () => ({
-      by: "name",
+      by: 'name',
       order: true,
     }),
   }

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 definePageMeta({
-  middleware: "auth",
+  middleware: 'auth',
 });
 
 const queryCache = useQueryCache();
-const newItemName = ref("");
-const selectedBrand = ref("");
+const newItemName = ref('');
+const selectedBrand = ref('');
 
 const brands = useBrands();
 
@@ -16,16 +16,16 @@ const {
 } = useMutation({
   mutation: (item: { name: string; brand: string }) => {
     // TODO: Add local validation
-    return $fetch("/api/items", {
-      method: "POST",
+    return $fetch('/api/items', {
+      method: 'POST',
       body: item,
     });
   },
 
   async onSuccess(item) {
-    newItemName.value = "";
-    selectedBrand.value = "";
-    await queryCache.invalidateQueries({ key: ["items"] });
+    newItemName.value = '';
+    selectedBrand.value = '';
+    await queryCache.invalidateQueries({ key: ['items'] });
   },
 
   onError(err) {

@@ -1,4 +1,4 @@
-import { useSorted } from "@vueuse/core";
+import { useSorted } from '@vueuse/core';
 
 interface SortableColumns {
   name: string;
@@ -22,12 +22,10 @@ export function useSort<T extends SortableColumns>(
     const bVal = b[sort.by];
 
     switch (sort.by) {
-      case "name":
-      case "brand":
-        return (
-          ((aVal as string) || "").localeCompare((bVal as string) || "") * dir
-        );
-      case "created_at":
+      case 'name':
+      case 'brand':
+        return ((aVal as string) || '').localeCompare((bVal as string) || '') * dir;
+      case 'created_at':
         if (!aVal && !bVal) return 0;
         if (!aVal) return 1 * dir;
         if (!bVal) return -1 * dir;

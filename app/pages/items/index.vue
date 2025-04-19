@@ -1,15 +1,12 @@
 <script lang="ts" setup>
-import { useItems } from "~/composables/useItems";
-import type { Item } from "~~/server/utils/db";
-
-const filterName = ref("");
-const filterBrand = ref("");
-const sortBy = ref<"name" | "brand" | "created_at">("name");
+const filterName = ref('');
+const filterBrand = ref('');
+const sortBy = ref<'name' | 'brand' | 'created_at'>('name');
 const sortOrder = ref(true); // true for ascending, false for descending
 const sortOptions = ref([
-  { label: "Name", value: "name" },
-  { label: "Brand", value: "brand" },
-  { label: "Date", value: "created_at" },
+  { label: 'Name', value: 'name' },
+  { label: 'Brand', value: 'brand' },
+  { label: 'Date', value: 'created_at' },
 ]);
 
 const items = useItems();

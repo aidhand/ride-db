@@ -3,7 +3,7 @@ const { loggedIn, user, clear } = useUserSession();
 
 watch(loggedIn, () => {
   if (!loggedIn.value) {
-    navigateTo("/");
+    navigateTo('/');
   }
 });
 </script>

@@ -1,4 +1,4 @@
-import { and, ilike, sql } from "drizzle-orm";
+import { and, ilike, sql } from 'drizzle-orm';
 
 interface ItemFilterOptions {
   name?: string;
@@ -6,8 +6,8 @@ interface ItemFilterOptions {
 
   limit?: number;
   offset?: number;
-  sortBy?: "name" | "created_at" | "updated_at";
-  sortOrder?: "asc" | "desc";
+  sortBy?: 'name' | 'created_at' | 'updated_at';
+  sortOrder?: 'asc' | 'desc';
 }
 
 // Retrieves items filtered by name or brand slug via query param.
@@ -20,17 +20,17 @@ export default eventHandler(async (event) => {
     .from(tables.items)
     .where(
       and(
-        ilike(tables.items.name, sql.placeholder("name")),
-        ilike(tables.items.brand, sql.placeholder("brand"))
+        ilike(tables.items.name, sql.placeholder('name')),
+        ilike(tables.items.brand, sql.placeholder('brand'))
       )
     )
-    .limit(sql.placeholder("limit"))
-    .offset(sql.placeholder("offset"))
-    .prepare("filteredItems");
+    .limit(sql.placeholder('limit'))
+    .offset(sql.placeholder('offset'))
+    .prepare('filteredItems');
 
   const results = await query.execute({
-    name: `%${options.name || "%"}%`,
-    brand: `%${options.brand || "%"}%`,
+    name: `%${options.name || '%'}%`,
+    brand: `%${options.brand || '%'}%`,
     limit: options.limit,
     offset: options.offset,
   });

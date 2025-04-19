@@ -1,5 +1,5 @@
-import { drizzle } from "drizzle-orm/neon-http";
-import * as schema from "../database/schema";
+import { drizzle } from 'drizzle-orm/neon-http';
+import * as schema from '../database/schema';
 
 export function useDB() {
   return drizzle(process.env.DATABASE_URL!, { schema });

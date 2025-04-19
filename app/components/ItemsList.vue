@@ -1,22 +1,23 @@
 <script lang="ts" setup>
+import type { ListProps } from '~~/types/props';
+
 const props = withDefaults(
-  defineProps<{
-    items: Item[];
-    error: Error | string | null;
-    status: "success" | "error" | "pending";
-    filter?: {
-      name?: string;
-      brand?: string;
-      category?: string;
-    };
-    sort?: {
-      by: "name" | "created_at" | "brand";
-      order: boolean;
-    };
-  }>(),
+  defineProps<
+    ListProps<Item> & {
+      filter?: {
+        name?: string;
+        brand?: string;
+        category?: string;
+      };
+      sort?: {
+        by: 'name' | 'created_at' | 'brand';
+        order: boolean;
+      };
+    }
+  >(),
   {
     sort: () => ({
-      by: "name",
+      by: 'name',
       order: true,
     }),
   }

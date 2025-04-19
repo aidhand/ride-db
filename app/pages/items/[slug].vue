@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { useItem } from "~/composables/useItem";
-
 const route = useRoute();
 const slug = route.params.slug as string;
 
@@ -8,7 +6,7 @@ const item = useItem(slug);
 
 // Helper function for safe date formatting
 const formatDate = (dateString: string | null) => {
-  if (!dateString) return "N/A";
+  if (!dateString) return 'N/A';
   return new Date(dateString).toLocaleDateString();
 };
 </script>
@@ -54,6 +52,7 @@ const formatDate = (dateString: string | null) => {
       v-if="item.status.value === 'pending'"
       class="flex justify-center"
     >
+      <!-- TODO: Change to skeleton -->
       <ULoadingBar size="lg" />
     </div>
 

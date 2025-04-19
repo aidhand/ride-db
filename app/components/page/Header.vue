@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 defineProps<{
-  title?: string;
-  status?: "success" | "error" | "pending";
+  title?: Ref<string> | string;
+  status?: 'success' | 'error' | 'pending';
 }>();
 
 defineSlots();

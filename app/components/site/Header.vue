@@ -1,43 +1,43 @@
 <script setup lang="ts">
-import type { DropdownMenuItem } from "@nuxt/ui";
+import type { DropdownMenuItem } from '@nuxt/ui';
 
 const colorMode = useColorMode();
 const { loggedIn, user, clear } = useUserSession();
 
 const isDark = computed({
   get() {
-    return colorMode.value === "dark";
+    return colorMode.value === 'dark';
   },
   set() {
-    colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
+    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
   },
 });
 
 const userNavItems = ref<DropdownMenuItem[][]>([
   [
     {
-      label: "Profile",
-      icon: "tabler:user",
-      href: "/user/profile",
+      label: 'Profile',
+      icon: 'tabler:user',
+      href: '/user/profile',
     },
     {
-      label: "Watchlist",
-      icon: "tabler:list-check",
-      href: "/user/watchlist",
+      label: 'Watchlist',
+      icon: 'tabler:list-check',
+      href: '/user/watchlist',
     },
     {
-      label: "Settings",
-      icon: "tabler:settings",
-      href: "/user/settings",
+      label: 'Settings',
+      icon: 'tabler:settings',
+      href: '/user/settings',
     },
   ],
   [
     {
-      label: "Logout",
-      icon: "tabler:logout",
+      label: 'Logout',
+      icon: 'tabler:logout',
       onSelect: () => {
         clear();
-        navigateTo("/");
+        navigateTo('/');
       },
     },
   ],
@@ -55,7 +55,7 @@ const userNavItems = ref<DropdownMenuItem[][]>([
         </div>
 
         <div class="flex-grow">
-          <SiteNavbar />
+          <SiteNavigation />
         </div>
 
         <div class="flex gap-4 items-center">

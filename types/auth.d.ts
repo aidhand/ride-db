@@ -1,4 +1,4 @@
-declare module "#auth-utils" {
+declare module '#auth-utils' {
   // General session information
   interface UserSession {
     id: number;

@@ -1,12 +1,12 @@
-import { sql } from "drizzle-orm";
-import { useValidatedBody, z } from "h3-zod";
+import { sql } from 'drizzle-orm';
+import { useValidatedBody, z } from 'h3-zod';
 
 const brandInputSchema = z.object({
   name: z.string().min(2).max(32),
 });
 
 export default eventHandler(async (event) => {
-  const { user } = await requireUserSession(event);
+  const { _ } = await requireUserSession(event);
   const { name } = await useValidatedBody(event, brandInputSchema);
 
   // TODO: Check if the user has permission to create a brand.
@@ -15,19 +15,19 @@ export default eventHandler(async (event) => {
   // }
 
   // Generate a slug from the brand name
-  let slug = slugify(name);
+  const slug = slugify(name);
 
   // Check if the slug already exists
   const db = useDB();
   const query = db
     .insert(tables.brands)
     .values({
-      name: sql.placeholder("name"),
-      slug: sql.placeholder("slug"),
+      name: sql.placeholder('name'),
+      slug: sql.placeholder('slug'),
     })
     .onConflictDoNothing()
     .returning()
-    .prepare("insertBrand");
+    .prepare('insertBrand');
 
   const results = await query.execute({ name, slug });
 

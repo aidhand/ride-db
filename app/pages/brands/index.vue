@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-import type { Brand } from "~~/server/utils/db";
-
-const filterName = ref("");
-const sortBy = ref<"name" | "created_at">("name");
+const filterName = ref('');
+const sortBy = ref<'name' | 'created_at'>('name');
 const sortOrder = ref(true); // true for ascending, false for descending
 const sortOptions = ref([
-  { label: "Name", value: "name" },
-  { label: "Date", value: "created_at" },
+  { label: 'Name', value: 'name' },
+  { label: 'Date', value: 'created_at' },
 ]);
 
 const brands = useBrands();
