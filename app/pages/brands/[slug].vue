@@ -1,8 +1,11 @@
 <script lang="ts" setup>
+import { useItemsByBrand } from "~/composables/useItemsByBrand";
+
 const route = useRoute();
 const slug = route.params.slug as string;
 
 const brand = useBrand(slug);
+const itemsQuery = useItemsByBrand(slug);
 </script>
 
 <template>
@@ -26,5 +29,11 @@ const brand = useBrand(slug);
         </UButton>
       </template>
     </PageHeader>
+
+    <ItemsList
+      :items="itemsQuery.data.value as Item[] || []"
+      :error="itemsQuery.error.value"
+      :status="itemsQuery.status.value"
+    />
   </div>
 </template>

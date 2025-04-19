@@ -7,6 +7,7 @@ declare module "#auth-utils" {
 
   // User information
   interface User {
+    slug: string;
     name: string;
     email: string;
   }
@@ -14,7 +15,7 @@ declare module "#auth-utils" {
   // Secure session data
   // This data is only available on the server
   interface SecureSessionData {
-    providerTokens?: any;
+    token: string;
     providerData?: any;
   }
 }

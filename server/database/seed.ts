@@ -1,93 +1,161 @@
-import { useDB, tables } from "../utils/db";
+import { tables, useDB } from "../utils/db";
+import { slugify } from "../utils/slugify";
 
 async function seed() {
   const db = useDB();
   console.log("🌱 Seeding database...");
 
-  // Seed roles
-  console.log("Seeding roles...");
-  const rolesData = [
-    { slug: "admin", name: "Administrator" },
-    { slug: "user", name: "User" },
-  ];
-
-  for (const role of rolesData) {
-    await db
-      .insert(tables.roles)
-      .values(role)
-      .onConflictDoNothing({ target: tables.roles.slug });
-  }
-
-  // Seed users
-  console.log("Seeding users...");
-  const usersData = [
-    { email: "me@aidhan.net", name: "Aidhan", role: "admin" },
-    { email: "jimmy@example.com", name: "Jimmy", role: "user" },
-    { email: "sara@example.com", name: "Sara", role: "user" },
-  ];
-
-  for (const user of usersData) {
-    await db
-      .insert(tables.users)
-      .values(user)
-      .onConflictDoNothing({ target: tables.users.email });
-  }
-
   // Seed brands
   console.log("Seeding brands...");
   const brandsData = [
-    { slug: "dainese", name: "Dainese" },
-    { slug: "oxford", name: "Oxford" },
-    { slug: "alpinestars", name: "Alpinestars" },
-    { slug: "bell", name: "Bell Helmets" },
+    { name: "Dainese" },
+    { name: "Oxford" },
+    { name: "Alpinestars" },
+    { name: "Bell Helmets" },
+    { name: "REV'IT!" },
+    { name: "Scorpion" },
+    { name: "Icon" },
+    { name: "Shoei" },
+    { name: "Arai" },
+    { name: "Klim" },
+    { name: "RST" },
+    { name: "Spidi" },
   ];
 
   for (const brand of brandsData) {
     await db
       .insert(tables.brands)
-      .values(brand)
+      .values({ ...brand, slug: slugify(brand.name) })
       .onConflictDoNothing({ target: tables.brands.slug });
+  }
+
+  // Seed categories
+  console.log("Seeding categories...");
+  const categoriesData = [
+    { slug: "riding-gear", name: "Riding Gear", parent: null },
+    { name: "Helmets", parent: "riding-gear" },
+    { name: "Jackets", parent: "riding-gear" },
+    { name: "Shirts", parent: "riding-gear" },
+    { name: "Gloves", parent: "riding-gear" },
+    { name: "Pants", parent: "riding-gear" },
+    { name: "Boots", parent: "riding-gear" },
+    { slug: "accessories", name: "Accessories", parent: null },
+    { name: "Tools", parent: "accessories" },
+    { slug: "luggage", name: "Luggage", parent: "accessories" },
+    { name: "Tank Bags", parent: "luggage" },
+    { name: "Backpacks", parent: "luggage" },
+  ];
+
+  for (const category of categoriesData) {
+    await db
+      .insert(tables.categories)
+      .values({
+        ...category,
+        slug: slugify(category.name),
+        parent: category.parent ? slugify(category.parent) : null,
+      })
+      .onConflictDoNothing({ target: tables.categories.slug });
   }
 
   // Seed items
   console.log("Seeding items...");
   const itemsData = [
     {
-      slug: "dainese-avro-4-leather-jacket",
       name: "Dainese Avro 4 Leather Jacket",
       brand: "dainese",
+      category: "jackets",
     },
     {
-      slug: "dainese-cool-dry-long-sleeve-shirt",
       name: "Dainese Cool Dry Long Sleeve Shirt",
       brand: "dainese",
+      category: "shirts",
     },
     {
-      slug: "Oxford-aqua-b25-backpack",
       name: "Oxford Aqua B25 Backpack",
       brand: "oxford",
+      category: "luggage",
     },
     {
-      slug: "alpinestars smx-6-v2-boots",
       name: "Alpinestars SMX-6 V2 Boots",
       brand: "alpinestars",
+      category: "boots",
     },
     {
-      slug: "bell-star-mips-helmet",
       name: "Bell Star MIPS Helmet",
       brand: "bell",
+      category: "helmets",
     },
     {
-      slug: "bell-qualifier-helmet",
       name: "Bell Qualifier Helmet",
       brand: "bell",
+      category: "helmets",
+    },
+    {
+      name: "REV'IT! Sand 4 H2O Jacket",
+      brand: "rev-it",
+      category: "jackets",
+    },
+    {
+      name: "Scorpion EXO-R1 Air Helmet",
+      brand: "scorpion",
+      category: "helmets",
+    },
+    {
+      name: "Icon Mesh AF Jacket",
+      brand: "icon",
+      category: "jackets",
+    },
+    {
+      name: "Shoei RF-1400 Helmet",
+      brand: "shoei",
+      category: "helmets",
+    },
+    {
+      name: "Arai Defiant-X Helmet",
+      brand: "arai",
+      category: "helmets",
+    },
+    {
+      name: "Klim Badlands Pro Pants",
+      brand: "klim",
+      category: "pants",
+    },
+    {
+      name: "RST GT CE Leather Gloves",
+      brand: "rst",
+      category: "gloves",
+    },
+    {
+      name: "Spidi TX Touring Boots",
+      brand: "spidi",
+      category: "boots",
+    },
+    {
+      name: "Dainese Carbon 3 Gloves",
+      brand: "dainese",
+      category: "gloves",
+    },
+    {
+      name: "REV'IT! Argo Backpack",
+      brand: "rev-it",
+      category: "backpacks",
+    },
+    {
+      name: "Oxford Toolkit Pro",
+      brand: "oxford",
+      category: "tools",
+    },
+    {
+      name: "Alpinestars Bionic Action Chest Protector",
+      brand: "alpinestars",
+      category: "accessories",
     },
   ];
 
   for (const item of itemsData) {
     await db
       .insert(tables.items)
-      .values(item)
+      .values({ ...item, slug: slugify(item.name) })
       .onConflictDoNothing({ target: tables.items.slug });
   }
 

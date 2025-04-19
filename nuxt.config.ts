@@ -9,6 +9,23 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
 
+  app: {
+    head: {
+      title: "RideDB",
+      htmlAttrs: {
+        lang: "en",
+      },
+    },
+  },
+
+  runtimeConfig: {
+    session: {
+      name: "nuxt_session",
+      maxAge: 60 * 60 * 24 * 7, // 1 week
+      password: process.env.NUXT_SESSION_PASSWORD!,
+    },
+  },
+
   css: ["@/assets/css/main.css"],
 
   modules: [
@@ -28,13 +45,5 @@ export default defineNuxtConfig({
 
   pinia: {
     storesDirs: ["./app/stores/**"],
-  },
-
-  runtimeConfig: {
-    session: {
-      name: "nuxt_session",
-      maxAge: 60 * 60 * 24 * 7, // 1 week
-      password: process.env.NUXT_SESSION_PASSWORD || "",
-    },
   },
 });

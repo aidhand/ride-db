@@ -1,14 +1,16 @@
 <script lang="ts" setup>
 const props = withDefaults(
   defineProps<{
-    items: Brand[];
+    items: Item[];
     error: Error | string | null;
     status: "success" | "error" | "pending";
     filter?: {
       name?: string;
+      brand?: string;
+      category?: string;
     };
     sort?: {
-      by: "name" | "created_at";
+      by: "name" | "created_at" | "brand";
       order: boolean;
     };
   }>(),
@@ -22,8 +24,8 @@ const props = withDefaults(
 
 // Filter and sort items based on props
 const outputItems = computed(() => {
-  const filteredItems = useFilter(props.items, props.filter);
-  return useSort(filteredItems, props.sort);
+  const filtered = useFilter(props.items, props.filter);
+  return useSort(filtered, props.sort);
 });
 </script>
 
@@ -39,30 +41,28 @@ const outputItems = computed(() => {
     <USkeleton
       v-for="(_, idx) in Array.from({ length: 5 })"
       :key="idx"
-      class="min-h-48"
+      class="min-h-32"
     />
   </Grid>
 
   <Grid v-else-if="outputItems.length">
     <UCard
-      v-for="(brand, idx) in outputItems"
+      v-for="(item, idx) in outputItems"
       :key="idx"
       variant="subtle"
-      class="min-h-48 flex flex-col justify-between"
+      class="min-h-32 flex flex-col justify-between"
     >
       <template #header>
-        <NuxtLink :href="`/brands/${brand.slug}`">
-          <h3 class="text-lg font-bold">{{ brand.name }}</h3>
+        <NuxtLink :href="`/items/${item.slug}`">
+          <h3 class="text-lg font-bold">{{ item.name }}</h3>
         </NuxtLink>
       </template>
-      <p>Description and logo of brand</p>
       <template #footer>
         <p
-          v-if="brand.created_at"
+          v-if="item.created_at"
           class="text-sm"
         >
-          Created
-          {{ new Date(brand.created_at || "").toLocaleDateString() }}
+          Created {{ new Date(item.created_at || "").toLocaleDateString() }}
         </p>
       </template>
     </UCard>
