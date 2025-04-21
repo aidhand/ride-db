@@ -3,6 +3,7 @@ import { and, ilike, sql } from "drizzle-orm";
 interface ItemFilterOptions {
   name?: string;
   brand?: string;
+  category?: string;
 
   limit?: number;
   offset?: number;
@@ -10,7 +11,7 @@ interface ItemFilterOptions {
   sortOrder?: "asc" | "desc";
 }
 
-// Retrieves items filtered by name or brand slug via query param.
+// Retrieves items filtered by name, brand slug, or category via query param.
 export default eventHandler(async (event) => {
   const options = getQuery(event) as ItemFilterOptions;
 
@@ -22,6 +23,7 @@ export default eventHandler(async (event) => {
       and(
         ilike(tables.items.name, sql.placeholder("name")),
         ilike(tables.items.brand, sql.placeholder("brand")),
+        ilike(tables.items.category, sql.placeholder("category")),
       ),
     )
     .limit(sql.placeholder("limit"))
@@ -31,6 +33,7 @@ export default eventHandler(async (event) => {
   const results = await query.execute({
     name: `%${options.name || "%"}%`,
     brand: `%${options.brand || "%"}%`,
+    category: `%${options.category || "%"}%`,
     limit: options.limit,
     offset: options.offset,
   });

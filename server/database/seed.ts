@@ -22,12 +22,14 @@ async function seed() {
     { name: "Spidi" },
   ];
 
-  for (const brand of brandsData) {
-    await db
-      .insert(tables.brands)
-      .values({ ...brand, slug: slugify(brand.name) })
-      .onConflictDoNothing({ target: tables.brands.slug });
-  }
+  await Promise.all(
+    brandsData.map((brand) =>
+      db
+        .insert(tables.brands)
+        .values({ ...brand, slug: slugify(brand.name) })
+        .onConflictDoNothing({ target: tables.brands.slug }),
+    ),
+  );
 
   // Seed categories
   console.info("Seeding categories...");
@@ -46,16 +48,18 @@ async function seed() {
     { name: "Backpacks", parent: "luggage" },
   ];
 
-  for (const category of categoriesData) {
-    await db
-      .insert(tables.categories)
-      .values({
-        ...category,
-        slug: slugify(category.name),
-        parent: category.parent ? slugify(category.parent) : null,
-      })
-      .onConflictDoNothing({ target: tables.categories.slug });
-  }
+  await Promise.all(
+    categoriesData.map((category) =>
+      db
+        .insert(tables.categories)
+        .values({
+          ...category,
+          slug: slugify(category.name),
+          parent: category.parent ? slugify(category.parent) : null,
+        })
+        .onConflictDoNothing({ target: tables.categories.slug }),
+    ),
+  );
 
   // Seed items
   console.info("Seeding items...");
@@ -152,12 +156,14 @@ async function seed() {
     },
   ];
 
-  for (const item of itemsData) {
-    await db
-      .insert(tables.items)
-      .values({ ...item, slug: slugify(item.name) })
-      .onConflictDoNothing({ target: tables.items.slug });
-  }
+  await Promise.all(
+    itemsData.map((item) =>
+      db
+        .insert(tables.items)
+        .values({ ...item, slug: slugify(item.name) })
+        .onConflictDoNothing({ target: tables.items.slug }),
+    ),
+  );
 
   console.info("✅ Seeding complete!");
 }

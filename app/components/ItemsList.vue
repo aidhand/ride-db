@@ -6,16 +6,21 @@
       ListProps<Item> & {
         filter?: {
           name?: string;
-          brand?: string;
-          category?: string;
+          brands?: string[] | string;
+          categories?: string[] | string;
         };
         sort?: {
-          by: "name" | "created_at" | "brand";
+          by: "name" | "created_at" | "brand" | "category"; // Add category sort option
           order: boolean;
         };
       }
     >(),
     {
+      filter: () => ({
+        name: "",
+        brands: [],
+        categories: [],
+      }),
       sort: () => ({
         by: "name",
         order: true,
@@ -34,24 +39,32 @@
   <div
     v-if="status === 'error'"
     class="text-center"
+    data-testid="items-list-error"
   >
     <p>Error: {{ error }}</p>
   </div>
 
-  <Grid v-else-if="status === 'pending'">
+  <BaseGrid
+    v-else-if="status === 'pending'"
+    data-testid="items-list-loading"
+  >
     <USkeleton
       v-for="(_, idx) in Array.from({ length: 5 })"
       :key="idx"
       class="min-h-32"
     />
-  </Grid>
+  </BaseGrid>
 
-  <Grid v-else-if="outputItems.length">
+  <BaseGrid
+    v-else-if="outputItems.length"
+    data-testid="items-list-grid"
+  >
     <UCard
       v-for="(item, idx) in outputItems"
       :key="idx"
       variant="subtle"
       class="min-h-32 flex flex-col justify-between"
+      data-testid="item-card"
     >
       <template #header>
         <NuxtLink :href="`/items/${item.slug}`">
@@ -67,11 +80,12 @@
         </p>
       </template>
     </UCard>
-  </Grid>
+  </BaseGrid>
 
   <div
     v-else
     class="text-center"
+    data-testid="items-list-empty"
   >
     <p>No items found</p>
   </div>

@@ -1,8 +1,10 @@
 import { useSorted } from "@vueuse/core";
+import { unref, type Ref } from "vue";
 
 interface SortableColumns {
   name: string;
   brand?: string | null;
+  category?: string | null; // Add category
   created_at: Date | string | null;
   slug?: string; // Adding slug for item links
 }
@@ -50,7 +52,9 @@ export function useSort<T extends SortableColumns>(
 
     switch (sort.by) {
       case "name":
-      case "brand": {
+      case "brand":
+      case "category": {
+        // Add category case
         return compareStrings(aVal as string, bVal as string, dir);
       }
       case "created_at": {

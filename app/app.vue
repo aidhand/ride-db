@@ -1,13 +1,18 @@
 <script lang="ts" setup>
-  const appConfig = useAppConfig();
+  const { site } = useAppConfig();
 
   useHead({
     titleTemplate: (title) => {
-      return title ? `${title} | ${appConfig.site.name}` : appConfig.site.name;
+      return title ? `${title} | ${site.name}` : site.name;
     },
     meta: [
-      { name: "description", content: "A database for riders" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      // TODO: Add meta tags for SEO
+      // { name: "description", content: site.description },
+      // { name: "keywords", content: site.keywords },
+      // { name: "og:title", content: site.name },
+      // { name: "og:description", content: site.description },
+      // { name: "og:image", content: site.image },
+      // { name: "og:url", content: site.url },
     ],
   });
 </script>

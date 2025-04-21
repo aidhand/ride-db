@@ -3,6 +3,9 @@
   const slug = route.params.slug as string;
 
   const brand = useBrand(slug);
+  const items = useItemsByBrand(slug, {
+    limit: 1,
+  });
 
   useHead({
     title: brand.data.value?.name || "Brand",
@@ -30,5 +33,11 @@
         </UButton>
       </template>
     </PageHeader>
+
+    <ItemsList
+      :items="(items.data.value as Item[]) || undefined"
+      :status="items.status.value"
+      :error="items.error.value"
+    />
   </div>
 </template>

@@ -19,16 +19,17 @@
         <h2
           v-else
           class="text-2xl font-semibold"
+          data-testid="page-title"
         >
           {{ title }}
         </h2>
       </div>
 
-      <slot name="description"></slot>
+      <slot name="description" />
     </div>
 
     <div>
-      <slot name="actions"></slot>
+      <slot name="actions" />
     </div>
   </section>
 </template>

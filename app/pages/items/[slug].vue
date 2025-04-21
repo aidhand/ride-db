@@ -2,14 +2,15 @@
   const route = useRoute();
   const slug = route.params.slug as string;
 
-  const item = useItem(slug);
+  // Prefix unused variables with _
+  const { data: item, error: _error, status } = useItem(slug); // Use the items composable
 
   useHead({
-    title: item.data.value?.name || "Item",
+    title: () => item.value?.name || "Item", // Use computed title
   });
 
-  // Helper function for safe date formatting
-  const formatDate = (dateString: string | null) => {
+  // Helper function for safe date formatting - prefix with _ as it's used only in template now
+  const _formatDate = (dateString: string | null) => {
     if (!dateString) return "N/A";
     return new Date(dateString).toLocaleDateString();
   };
@@ -18,20 +19,20 @@
 <template>
   <div class="flex flex-col gap-16">
     <PageHeader
-      :title="item.data.value?.name"
-      :status="item.status.value"
+      :title="item?.name"
+      :status="status"
     >
       <template
-        v-if="item.data.value"
+        v-if="item"
         #description
       >
         <p class="text-lg text-gray-500">
           Brand:
           <NuxtLink
-            :to="`/brands/${item.data.value.brand}`"
+            :to="`/brands/${item.brand}`"
             class="text-primary-600 hover:underline"
           >
-            {{ item.data.value.brand }}
+            {{ item.brand }}
           </NuxtLink>
         </p>
       </template>
@@ -53,7 +54,7 @@
     </PageHeader>
 
     <div
-      v-if="item.status.value === 'pending'"
+      v-if="status === 'pending'"
       class="flex justify-center"
     >
       <!-- TODO: Change to skeleton -->
@@ -61,16 +62,16 @@
     </div>
 
     <div
-      v-else-if="item.error.value"
+      v-else-if="_error"
       class="bg-red-50 p-4 rounded-lg"
     >
       <p class="text-red-600">
-        {{ item.error.value.message || "Failed to load item" }}
+        {{ _error?.message || "Failed to load item" }}
       </p>
     </div>
 
     <div
-      v-else-if="item.data.value"
+      v-else-if="item"
       class="grid grid-cols-1 md:grid-cols-2 gap-8"
     >
       <div class="bg-gray-100 rounded-lg p-8 flex items-center justify-center">
@@ -86,33 +87,33 @@
           <h3 class="text-lg font-medium">Details</h3>
           <dl class="grid grid-cols-[120px_1fr] gap-2">
             <dt class="font-medium text-gray-600">Item ID:</dt>
-            <dd class="font-mono text-sm">{{ item.data.value.id }}</dd>
+            <dd class="font-mono text-sm">{{ item.id }}</dd>
             <dt class="font-medium text-gray-600">Brand:</dt>
             <dd>
               <NuxtLink
-                :to="`/brands/${item.data.value.brand}`"
+                :to="`/brands/${item.brand}`"
                 class="text-primary-600 hover:underline"
               >
-                {{ item.data.value.brand }}
+                {{ item.brand }}
               </NuxtLink>
             </dd>
             <dt class="font-medium text-gray-600">Category:</dt>
             <dd>
               <NuxtLink
-                :to="`/categories/${item.data.value.category}`"
+                :to="`/categories/${item.category}`"
                 class="text-primary-600 hover:underline"
               >
-                {{ item.data.value.category }}
+                {{ item.category }}
               </NuxtLink>
             </dd>
 
             <dt class="font-medium text-gray-600">Added:</dt>
             <dd>
-              {{ formatDate(item.data.value.created_at) }}
+              {{ _formatDate(item.created_at) }}
             </dd>
             <dt class="font-medium text-gray-600">Updated:</dt>
             <dd>
-              {{ formatDate(item.data.value.updated_at) }}
+              {{ _formatDate(item.updated_at) }}
             </dd>
           </dl>
         </div>

@@ -4,7 +4,7 @@ export interface ListProps<T> {
   status: "success" | "error" | "pending";
 
   filter?: {
-    [key: string]: string;
+    [key: string]: string | string[];
   };
   sort?: {
     by: string;

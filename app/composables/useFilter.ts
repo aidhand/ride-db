@@ -1,12 +1,21 @@
-interface FilterableColumns {
+import { unref, type Ref } from "vue";
+
+// This is what fields we can accept from the items
+interface FilterFields {
   name?: string | null;
   brand?: string | null;
   category?: string | null;
 }
 
-export function useFilter<T extends FilterableColumns>(
+// This is what we can accept from the filtering options
+interface FilterOptions {
+  name?: string | null;
+  brands?: string[] | string;
+  categories?: string[] | string;
+}
+export function useFilter<T extends FilterFields>(
   items: Ref<T[]> | T[],
-  filter?: { name?: string; brand?: string; category?: string },
+  filter?: FilterOptions,
 ) {
   const actualItems = unref(items);
 
@@ -27,16 +36,23 @@ export function useFilter<T extends FilterableColumns>(
     }
 
     // Filter by brand if brand filter is provided
-    if (filter.brand) {
+    if (filter.brands && filter.brands.length > 0) {
       const itemBrand = item.brand?.toLocaleLowerCase();
-      const filterBrand = filter.brand.toLocaleLowerCase();
-      match.brand = itemBrand === filterBrand;
+      const filterBrands = Array.isArray(filter.brands)
+        ? filter.brands.map((b) => b.toLocaleLowerCase())
+        : [filter.brands.toLocaleLowerCase()];
+      match.brand = itemBrand ? filterBrands.includes(itemBrand) : false;
     }
 
-    if (filter.category) {
+    // Filter by category if category filter is provided
+    if (filter.categories && filter.categories.length > 0) {
       const itemCategory = item.category?.toLocaleLowerCase();
-      const filterCategory = filter.category.toLocaleLowerCase();
-      match.category = itemCategory === filterCategory;
+      const filterCategories = Array.isArray(filter.categories)
+        ? filter.categories.map((c) => c.toLocaleLowerCase())
+        : [filter.categories.toLocaleLowerCase()];
+      match.category = itemCategory
+        ? filterCategories.includes(itemCategory)
+        : false;
     }
 
     return match.name && match.brand && match.category;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  const { loggedIn, user, clear } = useUserSession();
+  const { loggedIn } = useUserSession();
 
   watch(loggedIn, () => {
     if (!loggedIn.value) {
@@ -13,11 +13,11 @@
     <SiteHeader />
 
     <main class="flex-grow">
-      <Container>
+      <BaseContainer>
         <div class="py-16 flex flex-col gap-16">
           <slot />
         </div>
-      </Container>
+      </BaseContainer>
     </main>
 
     <footer class="">

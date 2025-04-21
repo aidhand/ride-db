@@ -3,18 +3,41 @@
     title: "Items",
   });
 
-  const filterName = ref("");
-  const filterBrand = ref("");
-  const sortBy = ref<"name" | "brand" | "created_at">("name");
+  const items = useItems();
+  const brands = useBrands();
+  const categories = useCategories();
+
+  const activeFilters = ref<{
+    name: string;
+    brands: Array<{ label: string; value: string }>;
+    categories: Array<{ label: string; value: string }>;
+  }>({
+    name: "",
+    brands: [],
+    categories: [],
+  });
+
+  const filterBrands = ref([
+    ...(brands.data.value?.map((b) => ({
+      label: b.name,
+      value: b.slug,
+    })) || []),
+  ]);
+  const filterCategories = ref([
+    ...(categories.data.value?.map((c) => ({
+      label: c.name,
+      value: c.slug,
+    })) || []),
+  ]);
+
+  const sortBy = ref<"name" | "brand" | "category" | "created_at">("name");
   const sortOrder = ref(true); // true for ascending, false for descending
   const sortOptions = ref([
     { label: "Name", value: "name" },
     { label: "Brand", value: "brand" },
+    { label: "Category", value: "category" },
     { label: "Date", value: "created_at" },
   ]);
-
-  const items = useItems();
-  const brands = useBrands();
 </script>
 
 <template>
@@ -28,7 +51,7 @@
         <div class="flex flex-wrap gap-4 items-end">
           <UButtonGroup>
             <UInput
-              v-model="filterName"
+              v-model="activeFilters.name"
               color="neutral"
               variant="outline"
               size="lg"
@@ -51,19 +74,33 @@
               size="lg"
               label="Brand"
             />
-            <USelect
-              v-model="filterBrand"
-              :items="
-                brands.data.value?.map((b) => ({
-                  label: b.name,
-                  value: b.slug,
-                })) || []
-              "
+            <USelectMenu
+              v-model="activeFilters.brands"
+              :items="filterBrands"
+              multiple
               placeholder="All brands"
               variant="outline"
               size="lg"
               class="w-48"
               clearable
+            />
+          </UButtonGroup>
+
+          <UButtonGroup>
+            <UBadge
+              color="neutral"
+              variant="subtle"
+              size="lg"
+              label="Category"
+            />
+            <USelectMenu
+              v-model="activeFilters.categories"
+              :items="filterCategories"
+              multiple
+              placeholder="All categories"
+              variant="outline"
+              size="lg"
+              class="w-48"
             />
           </UButtonGroup>
 
@@ -94,20 +131,6 @@
               @click="sortOrder = !sortOrder"
             />
           </UButtonGroup>
-          <div>
-            <UButton
-              href="/items/add"
-              color="primary"
-              variant="subtle"
-              size="lg"
-            >
-              <UIcon
-                name="tabler:shopping-cart-plus"
-                size="1.125rem"
-              />
-              Add Item
-            </UButton>
-          </div>
         </div>
       </template>
     </PageHeader>
@@ -115,9 +138,13 @@
     <section class="flex flex-col gap-4">
       <ItemsList
         :items="(items.data.value as Item[]) || undefined"
-        :error="items.error.value"
         :status="items.status.value"
-        :filter="{ name: filterName, brand: filterBrand }"
+        :error="items.error.value"
+        :filter="{
+          name: activeFilters.name,
+          brands: activeFilters.brands.map((b) => b.value),
+          categories: activeFilters.categories.map((c) => c.value),
+        }"
         :sort="{ by: sortBy, order: sortOrder }"
       />
     </section>

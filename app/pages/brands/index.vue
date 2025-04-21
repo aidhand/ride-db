@@ -3,17 +3,19 @@
     title: "Brands",
   });
 
-  const filterName = ref("");
+  const brands = useBrands();
+
+  const activeFilters = ref<{
+    name: string;
+  }>({
+    name: "",
+  });
   const sortBy = ref<"name" | "created_at">("name");
   const sortOrder = ref(true); // true for ascending, false for descending
   const sortOptions = ref([
     { label: "Name", value: "name" },
     { label: "Date", value: "created_at" },
   ]);
-
-  const brands = useBrands();
-
-  // Set the page title
 </script>
 
 <template>
@@ -27,7 +29,7 @@
         <div class="flex flex-wrap gap-4 items-end">
           <UButtonGroup>
             <UInput
-              v-model="filterName"
+              v-model="activeFilters.name"
               color="neutral"
               variant="outline"
               size="lg"
@@ -70,20 +72,6 @@
               @click="sortOrder = !sortOrder"
             />
           </UButtonGroup>
-          <div>
-            <UButton
-              href="/brands/add"
-              color="primary"
-              variant="subtle"
-              size="lg"
-            >
-              <UIcon
-                name="tabler:layout-grid-add"
-                size="1.125rem"
-              />
-              Create brand
-            </UButton>
-          </div>
         </div>
       </template>
     </PageHeader>
@@ -93,7 +81,7 @@
         :items="(brands.data.value as Brand[]) || undefined"
         :error="brands.error.value"
         :status="brands.status.value"
-        :filter="{ name: filterName }"
+        :filter="activeFilters"
         :sort="{ by: sortBy, order: sortOrder }"
       />
     </section>

@@ -1,14 +1,16 @@
 <script lang="ts" setup>
+  const { site } = useAppConfig();
+
   useHead({
-    title: "Ride DB",
+    title: site.description,
   });
 </script>
 
 <template>
   <div>
-    <PageHeader title="Ride DB">
+    <PageHeader :title="site.name">
       <template #description>
-        <p>Search, compare and find motorcycles, gear, and accessories.</p>
+        <p>{{ site.description }}</p>
       </template>
     </PageHeader>
   </div>

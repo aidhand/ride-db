@@ -1,33 +1,33 @@
-import type { ConfigOptions } from "@nuxt/test-utils/playwright";
 import { defineConfig, devices } from "@playwright/test";
-import { fileURLToPath } from "node:url";
-import { isCI, isWindows } from "std-env";
 
-export default defineConfig<ConfigOptions>({
+export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
-  forbidOnly: !!isCI,
-  retries: isCI ? 2 : 0,
-  workers: isCI ? 1 : undefined,
-  timeout: isWindows ? 1000 * 60 * 5 : undefined,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
   reporter: "html",
-
   use: {
+    baseURL: "http://localhost:3000",
     trace: "on-first-retry",
-    screenshot: "on",
-
-    nuxt: {
-      rootDir: fileURLToPath(new URL(".", import.meta.url)),
-      buildDir: fileURLToPath(new URL("./.nuxt", import.meta.url)),
-      configFile: fileURLToPath(new URL("./nuxt.config.ts", import.meta.url)),
-      dev: true,
-    },
+    video: "on-first-retry",
+    screenshot: "only-on-failure",
   },
 
+  // Configure projects for different browsers
   projects: [
     {
-      name: "Chromium (Headless)",
-      use: { ...devices["Desktop Chrome"], channel: "chromium" },
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
     },
   ],
+
+  // Run local dev server before starting the tests
+  webServer: {
+    command: "bun run dev",
+    url: "http://localhost:3000",
+    reuseExistingServer: !process.env.CI,
+    stdout: "pipe",
+    stderr: "pipe",
+  },
 });
