@@ -14,6 +14,9 @@
 
 <template>
   <div class="flex flex-col gap-16">
+    <!-- TODO: Make the heading bigger -->
+    <!-- TODO: Use the brand logo where possible -->
+    <!-- TODO: Add a description or backstory of the brand -->
     <PageHeader
       :title="brand.data.value?.name"
       :status="brand.status.value"

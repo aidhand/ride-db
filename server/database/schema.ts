@@ -14,6 +14,21 @@ export const usersRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
 }));
 
+export const lists = pgTable("lists", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  user: text("user").notNull(),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
+});
+
+export const listsRelations = relations(lists, ({ one, many }) => ({
+  user: one(users, {
+    fields: [lists.user],
+    references: [users.slug],
+  }),
+  items: many(items),
+}));
+
 export const sessions = pgTable("sessions", {
   id: uuid("id").primaryKey().defaultRandom(),
   token: text("token").notNull().unique(),

@@ -11,7 +11,7 @@ async function seed() {
     { name: "Dainese" },
     { name: "Oxford" },
     { name: "Alpinestars" },
-    { name: "Bell Helmets" },
+    { name: "Bell" },
     { name: "REV'IT!" },
     { name: "Scorpion" },
     { name: "Icon" },

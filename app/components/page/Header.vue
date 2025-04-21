@@ -11,18 +11,24 @@
   <section class="flex flex-row flex-wrap justify-between items-end gap-8">
     <div>
       <div class="mb-2 min-h-8">
-        <USkeleton
+        <slot
           v-if="status === 'pending'"
-          class="h-8 w-32"
-        />
-
-        <h2
-          v-else
-          class="text-2xl font-semibold"
-          data-testid="page-title"
+          name="skeleton"
         >
-          {{ title }}
-        </h2>
+          <USkeleton class="h-8 w-32" />
+        </slot>
+
+        <slot
+          v-else
+          name="title"
+        >
+          <h2
+            class="text-3xl font-semibold"
+            data-testid="page-title"
+          >
+            {{ title }}
+          </h2>
+        </slot>
       </div>
 
       <slot name="description" />
