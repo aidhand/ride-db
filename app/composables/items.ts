@@ -33,15 +33,24 @@ export function useItemsByBrand(
   });
 }
 
-export function useItemsByCategory(category: string) {
+export function useItemsByCategory(
+  category: string,
+  options?: {
+    limit?: number;
+    offset?: number;
+  },
+) {
   return useQuery({
     key: ["items", "category", category],
     query: ({ signal }) => {
       const requestFetch = useRequestFetch();
-      return requestFetch(`/api/items?category=${category}`, {
-        signal,
-        method: "GET",
-      });
+      return requestFetch(
+        `/api/items?category=${category}${options?.limit ? `&limit=${options.limit}` : ""}${options?.offset ? `&offset=${options.offset}` : ""}`,
+        {
+          signal,
+          method: "GET",
+        },
+      );
     },
   });
 }

@@ -3,6 +3,9 @@
   const slug = route.params.slug as string;
 
   const category = useCategory(slug); // Use the category composable
+  const items = useItemsByCategory(slug, {
+    limit: 6,
+  });
 
   useHead({
     title: category.data.value?.name || "Category", // Update title
@@ -31,5 +34,10 @@
       </template>
     </PageHeader>
     <!-- TODO: Add content specific to the category page, e.g., list items in this category -->
+    <ItemsList
+      :items="(items.data.value as Item[]) || undefined"
+      :status="items.status.value"
+      :error="items.error.value"
+    />
   </div>
 </template>

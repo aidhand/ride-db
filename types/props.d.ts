@@ -11,3 +11,11 @@ export interface ListProps<T> {
     order: boolean;
   };
 }
+
+export interface SortableColumns {
+  name?: string;
+  slug?: string;
+  brand?: string | null;
+  category?: string | null;
+  created_at?: Date | string | null;
+}

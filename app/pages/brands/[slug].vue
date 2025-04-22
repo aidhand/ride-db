@@ -4,7 +4,7 @@
 
   const brand = useBrand(slug);
   const items = useItemsByBrand(slug, {
-    limit: 1,
+    limit: 6,
   });
 
   useHead({

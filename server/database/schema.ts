@@ -16,6 +16,8 @@ export const usersRelations = relations(users, ({ many }) => ({
 
 export const lists = pgTable("lists", {
   id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull(),
   user: text("user").notNull(),
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),

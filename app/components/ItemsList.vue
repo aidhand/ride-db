@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import type { ListProps } from "~~/types/props";
+  import type { ListProps, SortableColumns } from "~~/types/props";
 
   const props = withDefaults(
     defineProps<
@@ -10,7 +10,7 @@
           categories?: string[] | string;
         };
         sort?: {
-          by: "name" | "created_at" | "brand" | "category"; // Add category sort option
+          by: keyof SortableColumns; // Add category sort option
           order: boolean;
         };
       }

@@ -1,21 +1,32 @@
 <script lang="ts" setup>
+  import type { SortableColumns } from "~~/types/props";
+
   useHead({
     title: "Items",
   });
+
+  const route = useRoute();
+  const router = useRouter();
 
   const items = useItems();
   const brands = useBrands();
   const categories = useCategories();
 
-  const activeFilters = ref<{
-    name: string;
-    brands: Array<{ label: string; value: string }>;
-    categories: Array<{ label: string; value: string }>;
-  }>({
-    name: "",
-    brands: [],
-    categories: [],
-  });
+  const searchQuery = route.query.s as string;
+
+  const brandsQuery = [route.query.b, route.query.brand, route.query.brands]
+    .filter(Boolean)
+    .join(",");
+  const brandsArray = brandsQuery ? brandsQuery.split(",") : [];
+
+  const categoriesQuery = [
+    route.query.c,
+    route.query.category,
+    route.query.categories,
+  ]
+    .filter(Boolean)
+    .join(",");
+  const categoriesArray = categoriesQuery ? categoriesQuery.split(",") : [];
 
   const filterBrands = ref([
     ...(brands.data.value?.map((b) => ({
@@ -30,14 +41,51 @@
     })) || []),
   ]);
 
-  const sortBy = ref<"name" | "brand" | "category" | "created_at">("name");
-  const sortOrder = ref(true); // true for ascending, false for descending
-  const sortOptions = ref([
+  const sortOptions = [
     { label: "Name", value: "name" },
     { label: "Brand", value: "brand" },
     { label: "Category", value: "category" },
     { label: "Date", value: "created_at" },
-  ]);
+  ];
+
+  // Make a list of active brands by checking the brands query array against the list of brands we can filter by
+  const activeBrands = brandsArray
+    .map((b) => filterBrands.value?.find((br) => br.value === b))
+    .filter((b): b is { label: string; value: string } => b !== undefined);
+
+  // Make a list of active categories by checking the categories query array against the list of categories we can filter by
+  const activeCategories = categoriesArray
+    .map((c) => filterCategories.value?.find((cat) => cat.value === c))
+    .filter((c): c is { label: string; value: string } => c !== undefined);
+
+  const activeFilters = ref<{
+    name: string;
+    brands: Array<{ label: string; value: string }>;
+    categories: Array<{ label: string; value: string }>;
+    sortBy: keyof SortableColumns;
+    sortOrder: boolean;
+  }>({
+    name: searchQuery || "",
+    brands: activeBrands,
+    categories: activeCategories,
+    sortBy: "name" as keyof SortableColumns,
+    sortOrder: true,
+  });
+
+  // Watch for changes in the filters and update the query parameters accordingly
+  watch(
+    activeFilters.value,
+    (filters) => {
+      router.push({
+        query: {
+          s: filters.name || undefined,
+          b: filters.brands.map((b) => b.value).join(",") || undefined,
+          c: filters.categories.map((c) => c.value).join(",") || undefined,
+        },
+      });
+    },
+    { deep: true },
+  );
 </script>
 
 <template>
@@ -56,14 +104,6 @@
               variant="outline"
               size="lg"
               placeholder="Search"
-            />
-
-            <UButton
-              color="neutral"
-              variant="subtle"
-              size="lg"
-              icon="i-tabler:search"
-              class="cursor-pointer"
             />
           </UButtonGroup>
 
@@ -101,6 +141,7 @@
               variant="outline"
               size="lg"
               class="w-48"
+              clearable
             />
           </UButtonGroup>
 
@@ -112,7 +153,7 @@
               label="Sort"
             />
             <USelect
-              v-model="sortBy"
+              v-model="activeFilters.sortBy"
               :items="sortOptions"
               variant="outline"
               size="lg"
@@ -123,12 +164,12 @@
               variant="outline"
               size="lg"
               :icon="
-                sortOrder
+                activeFilters.sortOrder
                   ? 'i-tabler:sort-ascending-2'
                   : 'i-tabler:sort-descending-2'
               "
               class="cursor-pointer"
-              @click="sortOrder = !sortOrder"
+              @click="activeFilters.sortOrder = !activeFilters.sortOrder"
             />
           </UButtonGroup>
         </div>
@@ -145,7 +186,10 @@
           brands: activeFilters.brands.map((b) => b.value),
           categories: activeFilters.categories.map((c) => c.value),
         }"
-        :sort="{ by: sortBy, order: sortOrder }"
+        :sort="{
+          by: activeFilters.sortBy as keyof SortableColumns,
+          order: activeFilters.sortOrder,
+        }"
       />
     </section>
   </div>

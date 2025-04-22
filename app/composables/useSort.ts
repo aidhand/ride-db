@@ -1,13 +1,6 @@
 import { useSorted } from "@vueuse/core";
 import { unref, type Ref } from "vue";
-
-interface SortableColumns {
-  name: string;
-  brand?: string | null;
-  category?: string | null; // Add category
-  created_at: Date | string | null;
-  slug?: string; // Adding slug for item links
-}
+import type { SortableColumns } from "~~/types/props";
 
 // Helper functions to reduce complexity
 function compareStrings(
